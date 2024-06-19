@@ -1,0 +1,6 @@
+<config>
+    <items>4</items>
+    <limit>30</limit>
+    <size>75</size>
+    <ignored>!, </ignored>
+</config>
