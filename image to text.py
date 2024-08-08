@@ -2,11 +2,14 @@ from PIL import Image
 import numpy
 import os
 
-print("...\"Folder Name\"\\\"Image Name\"")
-image = input("where ")
+def mapRange(x, in_min, in_max, out_min, out_max):
+  return (x - in_min) * (out_max - out_min) // (in_max - in_min) + out_min
+
+image = input("file name: ")
 os.system('cls')
 
 with Image.open(image) as im:
+    im = im.resize((64, 64))
     im = im.convert("L")
 
 width, height = im.size
@@ -21,6 +24,7 @@ for x in range(width):
         array[x].append([])
         array[x][y] = "aaa"
 
+texture = ["  ", "░░", "▒▒", "▓▓", "██"]
 
 array = numpy.array(array).reshape((width, height))
 outString = ""
@@ -32,20 +36,8 @@ for i in range(width):
 
 for i in range(width):
     for j in range(height):
-        if 0 <= int(array[i, j]) <= 51:
-            array[i, j] = "  "
-        elif 52 <= int(array[i, j]) <= 102:
-            array[i, j] = "░░"
-        elif 103 <= int(array[i, j]) <= 154:
-            array[i, j] = "▒▒"
-        elif 155 <= int(array[i, j]) <= 205:
-            array[i, j] = "▓▓"
-        elif 206 <= int(array[i, j]) <= 254:
-            array[i, j] = "██"
-        else:
-            array[i, j] = "  "
-#numpy.set_printoptions(threshold= numpy.inf)
-#print(array)
+        array[i, j] = texture[mapRange(int(array[i, j]), 0, 255, 0, len(texture)-1)]
+
 display = ""
 
 shapeH, shapeW = numpy.shape(array)
